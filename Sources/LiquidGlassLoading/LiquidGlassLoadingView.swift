@@ -36,12 +36,21 @@ private struct GlassBackground: UIViewRepresentable {
     let cornerRadius: CGFloat
 
     func makeUIView(context: Context) -> UIVisualEffectView {
-        let view = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialLight))
+        let view = UIVisualEffectView()
         view.clipsToBounds = true
         view.layer.cornerRadius = cornerRadius
         view.layer.cornerCurve = .continuous
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.white.withAlphaComponent(0.35).cgColor
+
+        if #available(iOS 26.0, *) {
+            let effect = UIGlassEffect(style: .regular)
+            effect.isInteractive = true
+            view.effect = effect
+        } else {
+            view.effect = UIBlurEffect(style: .systemUltraThinMaterialLight)
+        }
+
         return view
     }
 
