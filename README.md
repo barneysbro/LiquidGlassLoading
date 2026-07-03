@@ -24,10 +24,35 @@ https://github.com/barneysbro/LiquidGlassLoading
 ## SwiftUI Usage
 
 ```swift
+import SwiftUI
 import LiquidGlassLoading
 
-LiquidGlassLoadingView(title: "Loading...")
+struct ContentView: View {
+    @State private var isLoading = false
 
+    var body: some View {
+        ZStack {
+            Button("Load") {
+                isLoading = true
+
+                Task {
+                    // Do async work...
+                    try? await Task.sleep(for: .seconds(2))
+                    isLoading = false
+                }
+            }
+
+            if isLoading {
+                LiquidGlassLoadingView(title: "Loading...")
+            }
+        }
+    }
+}
+```
+
+Status styles:
+
+```swift
 LiquidGlassLoadingView(title: "Done", style: .success)
 LiquidGlassLoadingView(title: "Failed", style: .error)
 ```
